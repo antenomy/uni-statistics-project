@@ -1,7 +1,9 @@
-import pandas as pd
+from task_runner import run_task
 
-from config import BASE_DIR
+TASK = 1
+PART = "e"
 
-df = pd.read_csv(BASE_DIR + "data/sls22_cleaned.csv")
+def main() -> None:
+    run_task(TASK, PART)
 
-print(df.describe())
+main()
