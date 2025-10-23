@@ -4,24 +4,25 @@ import numpy as np
 from matplotlib import pyplot
 from scipy.special import polygamma
 from scipy.optimize import fsolve
+import sys
 
-from config import BASE_DIR
-
-
-def task_one(part: str = None) -> None:
-    input_df = pd.read_csv(BASE_DIR + "data/sls22_cleaned.csv")
+def main(part: str = "") -> None:
+    print(f"running taks one, { f'part {part}' if part != '' else 'all parts'}")
+    input_df = pd.read_csv("data/sls22_cleaned.csv")
 
     ### Part A ###
+    print("running part A")
     participant_names = input_df.iloc[:, 0].unique()
     
     tricks_flattened = input_df.iloc[:, 8:12].values.flatten().tolist()
 
-    if part == "a":
+    if part == "a" or part == "":
         pyplot.hist(tricks_flattened, bins=20)
         pyplot.show()
 
 
     ### Part B ###
+    print("running part B")
     participants = pd.DataFrame(columns=["id", "tricks", "successes", "success_probability", "alpha", "beta"])
 
 
@@ -35,13 +36,13 @@ def task_one(part: str = None) -> None:
 
         participants.loc[len(participants)] = [name, tricks, successes, success_probability, 0, 0]
 
-    if part == "b":
+    if part == "b" or part == "":
         for _, row in participants.iterrows():
             print(row["id"], row["success_probability"])
 
     
     ### Part D ###
-
+    print("running part D")
     for _, row in participants.iterrows():
         name = row["id"]
         tricks = [x for x in row["tricks"] if x != 0]
@@ -57,18 +58,20 @@ def task_one(part: str = None) -> None:
         participants.loc[participants["id"] == name, "alpha"] = alpha
         participants.loc[participants["id"] == name, "beta"] = beta
     
-    if part == "d":
+    if part == "d" or part == "":
         for _, row in participants.iterrows():
             print(row["id"], row["alpha"], row["beta"])
     
     
     ### Part E ###
-
-    if part == "e":
+    print("running part E")
+    if part == "e" or part == "":
         for _, row in participants.iterrows():
             success_probability = row["success_probability"]
             alpha = row["alpha"]
             beta = row["beta"]
             expected_value = success_probability * alpha / (alpha + beta)
             print(row["id"], expected_value)
-    
+
+if __name__ == "__main__":
+    main(sys.argv[1])

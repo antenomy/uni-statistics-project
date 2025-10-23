@@ -1,3 +1,4 @@
+import sys
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
@@ -25,7 +26,7 @@ def calculate_sample_covariance(X: np.array)-> np.array:
     return result
 
 
-def task_two(part: str = None) -> None:
+def main(part: str = None) -> None:
     # Import data from csv
     input_df = pd.read_csv("data/sls22_cleaned.csv")
 
@@ -88,9 +89,11 @@ def task_two(part: str = None) -> None:
     simulated_values = np.zeros([num_samples, len(names)])
 
     inverse = np.vectorize(g_inverse)
+    
+    names = []
     iter = 0
-
     for _, row in participants.iterrows():
+        names.append(row["id"])
         r_1_samples = inverse(norm.rvs(loc=row["mean_1"], scale=row["var_1"], size=num_samples))
         r_2_samples = inverse(row["lam"] * r_1_samples + norm.rvs(loc=row["mean_2"], scale=abs(row["var_2"]), size=num_samples))
 
@@ -111,3 +114,6 @@ def task_two(part: str = None) -> None:
         plt.title("Simulated Value Distributions")
         plt.ylabel("Value")
         plt.show()
+
+if __name__ == "__main__":
+    main(sys.argv[1])

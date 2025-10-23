@@ -20,7 +20,7 @@ class Participant():
 
 
 def task_one(part: str = None) -> None:
-    df = pd.read_csv(BASE_DIR + "data/sls22_cleaned.csv")
+    df = pd.read_csv("data/sls22_cleaned.csv")
 
     # Part A
     participant_names = df.iloc[:, 0].unique()
