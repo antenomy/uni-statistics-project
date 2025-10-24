@@ -15,8 +15,9 @@ def main(part: str = None, return_participants: bool = False) -> pd.DataFrame:
     input_df = pd.read_csv("data/sls22_cleaned.csv")
 
     ### Part A ###
-    participants = pd.DataFrame(columns=["id", "3", "successes", "success_probability", "mean", "var"])
-
+    print("running 3.a")
+    participants = pd.DataFrame(columns=["id", "tricks_nonzero", "successes", "success_probability", "mean", "var"])
+    
     for id in input_df["id"].unique().tolist():
         mask = input_df["id"] == id
 
@@ -45,6 +46,7 @@ def main(part: str = None, return_participants: bool = False) -> pd.DataFrame:
 
 
     ### Part B ###
+    print("running 3.b")
     num_samples = 500000
     names = participants["id"].unique().tolist()
     num_participants = len(names)

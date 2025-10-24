@@ -1,3 +1,5 @@
+import sys
+
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
@@ -7,7 +9,8 @@ from scipy.integrate import quad
 from scipy.stats import cauchy
 import random
 
-from task_three import main as task_three
+from src.task.task_three import main as task_three
+
 
 def sample_and_apriori(theta: float, var: float, data_array: np.array) -> float:
     exponent = -np.sum((data_array - theta)**2)/(2*var)
@@ -54,22 +57,23 @@ def metropolis(var: float, data_array: np.array) -> np.array:
         
 
 
-def task_four(part: str = None) -> None:
+def main(part: str = None) -> None:
     
-    participants = task_three()
+    participants = task_three(return_participants=True)
     chain_count = 4
 
     ### Part A ###
+    print("running 4.a")
     for _, row in participants.iterrows():
         # row = participants["id"=="Papa"]
 
         var = row["var"]
-        tricks_results = np.array(row["tricks_results"])
+        tricks_nonzero = np.array(row["tricks_nonzero"])
 
         result_array = np.zeros([10000, chain_count])
 
         for i in range(chain_count):
-            result_array[:, i] = metropolis(var, tricks_results)
+            result_array[:, i] = metropolis(var, tricks_nonzero)
 
         # print(result_array)
 
@@ -98,3 +102,6 @@ def task_four(part: str = None) -> None:
 
         plt.plot(rolling_average[5000:], linestyle='-')
         plt.show()
+
+if __name__ == "__main__":
+    main(sys.argv[1])
